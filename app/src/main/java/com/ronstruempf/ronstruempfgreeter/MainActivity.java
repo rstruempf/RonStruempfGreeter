@@ -61,5 +61,4 @@ public class MainActivity extends AppCompatActivity {
         TextView messageTextView = (TextView)findViewById(R.id.message_text_view);
         messageTextView.setText(greeting);
     }
-
 }
