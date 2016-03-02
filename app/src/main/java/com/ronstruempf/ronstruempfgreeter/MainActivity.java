@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    private static String APP_TAG = "DBGTAG-MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +59,13 @@ public class MainActivity extends AppCompatActivity {
     public void greenButtonClicked(View view) {
         EditText greetEditText = (EditText)findViewById(R.id.greet_edit_text);
         String name = greetEditText.getText().toString();
+        Log.d(APP_TAG, "greenButtonClicked: Name is " + name);
         String greeting = String.format("Hello, %s!", name);
         TextView messageTextView = (TextView)findViewById(R.id.message_text_view);
         messageTextView.setText(greeting);
+    }
+
+    public void reverseButtonClicked(View view) {
+        // TODO: Finish
     }
 }

@@ -43,11 +43,19 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         //
         // The display field should now display a greeting to Jake
         //
-        TextView greetMessage =
-                (TextView) activity.findViewById(R.id.message_text_view);
+        TextView greetMessage = (TextView)activity.findViewById(R.id.message_text_view);
         String actualText = greetMessage.getText().toString();
         assertEquals("Hello, Jake!", actualText);
     }
 
+    /**
+     *
+
+    public void whenCreatedReverseShouldBeDisabled() {
+        MainActivity activity = getActivity();
+        Button reverseButton = (Button)activity.findViewById(R.id.reverse_button);
+        assertFalse(reverseButton.isEnabled());
+    }
+     */
 
 }
