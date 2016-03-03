@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -56,13 +57,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void greenButtonClicked(View view) {
+    public void greetButtonClicked(View view) {
         EditText greetEditText = (EditText)findViewById(R.id.greet_edit_text);
         String name = greetEditText.getText().toString();
-        Log.d(APP_TAG, "greenButtonClicked: Name is " + name);
+        Log.d(APP_TAG, "greetButtonClicked: Name is " + name);
         String greeting = String.format("Hello, %s!", name);
         TextView messageTextView = (TextView)findViewById(R.id.message_text_view);
         messageTextView.setText(greeting);
+        Button reverseButton = (Button)findViewById(R.id.reverse_button);
+        reverseButton.setEnabled(true);
     }
 
     public void reverseButtonClicked(View view) {

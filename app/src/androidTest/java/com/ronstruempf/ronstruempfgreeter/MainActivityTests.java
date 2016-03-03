@@ -56,4 +56,15 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         Button reverseButton = (Button)activity.findViewById(R.id.reverse_button);
         assertEquals(reverseButton.isEnabled(),false);
     }
+
+    public void testWhenGreetClickedReverseShouldBeEnabled() {
+        MainActivity activity = getActivity();
+        Button reverseButton = (Button)activity.findViewById(R.id.reverse_button);
+        //
+        // Tap the Greet button
+        //
+        Button greetButton = (Button)activity.findViewById(R.id.greet_button);
+        TouchUtils.clickView(this, greetButton);
+        assertEquals(reverseButton.isEnabled(),true);
+    }
 }
