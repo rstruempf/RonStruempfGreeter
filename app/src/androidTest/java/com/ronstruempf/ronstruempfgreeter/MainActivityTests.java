@@ -22,43 +22,17 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
     }
 
     public void testWhenSendStringSyncShouldSetString() {
-        MainActivity activity = getActivity();
-        final EditText nameEditText = (EditText)activity.findViewById(R.id.greet_edit_text);
-        getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                nameEditText.requestFocus();
-            }
-        });
-        getInstrumentation().waitForIdleSync();
-        getInstrumentation().sendStringSync("Jake");
+        setNameToJake(getActivity());
+        final EditText nameEditText = (EditText)getActivity().findViewById(R.id.greet_edit_text);
         String actualText = nameEditText.getText().toString();
         assertEquals("Jake", actualText);
     }
 
     public void testGreet() {
         MainActivity activity = getActivity();
-        //
-        // set the value of the name edit field
-        //
-        final EditText nameEditText = (EditText)activity.findViewById(R.id.greet_edit_text);
-        getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                nameEditText.requestFocus();
-            }
-        });
-        getInstrumentation().waitForIdleSync();
-        getInstrumentation().sendStringSync("Jake");
-
-        //
-        // Tap the Greet button
-        //
-        Button greetButton = (Button)activity.findViewById(R.id.greet_button);
-        TouchUtils.clickView(this, greetButton);
-        //
-        // The display field should now display a greeting to Jake
-        //
+        // set name edit text to Jake
+        setNameToJake(activity);
+        clickGreetButton(activity);
         TextView greetMessage = (TextView)activity.findViewById(R.id.message_text_view);
         String actualText = greetMessage.getText().toString();
         assertEquals("Hello, Jake!", actualText);
@@ -73,11 +47,7 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
     public void testWhenGreetClickedReverseShouldBeEnabled() {
         MainActivity activity = getActivity();
         Button reverseButton = (Button)activity.findViewById(R.id.reverse_button);
-        //
-        // Tap the Greet button
-        //
-        Button greetButton = (Button)activity.findViewById(R.id.greet_button);
-        TouchUtils.clickView(this, greetButton);
+        clickGreetButton(activity);
         assertEquals(reverseButton.isEnabled(),true);
     }
 
@@ -85,19 +55,10 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         MainActivity activity = getActivity();
 
         // set name field to "Jake"
-        final EditText nameEditText = (EditText)activity.findViewById(R.id.greet_edit_text);
-        getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                nameEditText.requestFocus();
-            }
-        });
-        getInstrumentation().waitForIdleSync();
-        getInstrumentation().sendStringSync("Jake");
+        setNameToJake(activity);
 
         // simulate a click to the Greet button
-        Button greetButton = (Button)activity.findViewById(R.id.greet_button);
-        TouchUtils.clickView(this, greetButton);
+        clickGreetButton(activity);
 
         // then click the Reverse button
         Button reverseButton = (Button)activity.findViewById(R.id.reverse_button);
@@ -108,4 +69,36 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         String actualText = greetMessage.getText().toString();
         assertEquals("!ekaJ ,olleH", actualText);
     }
+
+    /**
+     * Set name edit text field to Jake
+     *
+     * @param activity Activity being tested
+     */
+    private void setNameToJake(MainActivity activity) {
+        final EditText nameEditText = (EditText)activity.findViewById(R.id.greet_edit_text);
+        getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                nameEditText.requestFocus();
+            }
+        });
+        getInstrumentation().waitForIdleSync();
+        hold(500);
+        getInstrumentation().sendStringSync("Jake");
+    }
+
+    private void hold(int tm) {
+        try {
+            Thread.sleep(tm);
+        } catch (InterruptedException e) {
+            // don't do anything
+        }
+    }
+
+    private void clickGreetButton(MainActivity activity) {
+        Button greetButton = (Button)activity.findViewById(R.id.greet_button);
+        TouchUtils.clickView(this, greetButton);
+    }
+
 }
