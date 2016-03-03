@@ -47,6 +47,7 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         //
         TextView greetMessage = (TextView)activity.findViewById(R.id.message_text_view);
         String actualText = greetMessage.getText().toString();
+        // TODO: Uncomment this test when the reason for its intermittent failure is known
         //assertEquals("Hello, Jake!", actualText);
     }
 
