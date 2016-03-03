@@ -21,13 +21,27 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         assertNotNull(activity);
     }
 
+    public void testWhenSendStringSyncShouldSetString() {
+        MainActivity activity = getActivity();
+        final EditText nameEditText = (EditText)activity.findViewById(R.id.greet_edit_text);
+        getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                nameEditText.requestFocus();
+            }
+        });
+        getInstrumentation().waitForIdleSync();
+        getInstrumentation().sendStringSync("Jake");
+        String actualText = nameEditText.getText().toString();
+        assertEquals("Jake", actualText);
+    }
+
     public void testGreet() {
         MainActivity activity = getActivity();
         //
         // set the value of the name edit field
         //
         final EditText nameEditText = (EditText)activity.findViewById(R.id.greet_edit_text);
-        assertNotNull(nameEditText);
         getInstrumentation().runOnMainSync(new Runnable() {
             @Override
             public void run() {
@@ -47,8 +61,7 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         //
         TextView greetMessage = (TextView)activity.findViewById(R.id.message_text_view);
         String actualText = greetMessage.getText().toString();
-        // TODO: Uncomment this test when the reason for its intermittent failure is known
-        //assertEquals("Hello, Jake!", actualText);
+        assertEquals("Hello, Jake!", actualText);
     }
 
     public void testWhenCreatedReverseShouldBeDisabled() {
@@ -66,5 +79,33 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         Button greetButton = (Button)activity.findViewById(R.id.greet_button);
         TouchUtils.clickView(this, greetButton);
         assertEquals(reverseButton.isEnabled(),true);
+    }
+
+    public void testWhenGreetAndReverseShouldHaveReverseGreeting() {
+        MainActivity activity = getActivity();
+
+        // set name field to "Jake"
+        final EditText nameEditText = (EditText)activity.findViewById(R.id.greet_edit_text);
+        getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                nameEditText.requestFocus();
+            }
+        });
+        getInstrumentation().waitForIdleSync();
+        getInstrumentation().sendStringSync("Jake");
+
+        // simulate a click to the Greet button
+        Button greetButton = (Button)activity.findViewById(R.id.greet_button);
+        TouchUtils.clickView(this, greetButton);
+
+        // then click the Reverse button
+        Button reverseButton = (Button)activity.findViewById(R.id.reverse_button);
+        TouchUtils.clickView(this, reverseButton);
+
+        // greeting should now be "Hello, Jake!" backwards ("!ekaJ ,olleH")
+        TextView greetMessage = (TextView)activity.findViewById(R.id.message_text_view);
+        String actualText = greetMessage.getText().toString();
+        assertEquals("!ekaJ ,olleH", actualText);
     }
 }
